@@ -1,0 +1,12 @@
+# Latex build file
+**/*.aux
+**/*.fdb_latexmk
+**/*.out
+**/*.fls
+**/*.log
+**/*.synctex.gz
+src/**/*.pdf
+output/**/*.pdf
+modified_files.txt
+node_modules
+out
