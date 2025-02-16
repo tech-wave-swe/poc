@@ -51,8 +51,8 @@ Il tester restituisce sul terminale le linee di codice che più si avvicianano a
 
 ```json
 {
-    file: filepath,
-    line_number: xx
+  "file": "path/to/file",
+  "line_number": 10
 }
 ```
 
