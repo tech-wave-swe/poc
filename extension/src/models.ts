@@ -19,6 +19,7 @@ export class DocumentManager {
     }
     return this.instance;
   }
+
   public isEmpty(): boolean {
     return this.documents.length === 0;
   }

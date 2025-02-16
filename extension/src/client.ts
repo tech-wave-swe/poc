@@ -57,7 +57,7 @@ export type CodeCompletionList = CodeCompletion[];
  * @returns Promise<CodeCompletionList> The response from Ollama.
  */
 export async function autocompleteOllama(
-  codeContext: string,
+  codeContext: string
 ): Promise<CodeCompletionList> {
   const config = Config.getInstance();
 
@@ -68,7 +68,7 @@ export async function autocompleteOllama(
   const CodeCompletionListSchema = z.array(
     z.object({
       code_text: z.string(),
-    }),
+    })
   );
 
   const messageContent = `You are a LLM model tasked with replying with the most accurate inline code completion using the given context.
@@ -87,7 +87,7 @@ export async function autocompleteOllama(
   });
 
   const response = CodeCompletionListSchema.parse(
-    JSON.parse(structuredResponse.message.content),
+    JSON.parse(structuredResponse.message.content)
   );
   vscode.window.showInformationMessage(structuredResponse.message.content);
   return response;
@@ -100,7 +100,7 @@ export async function autocompleteOllama(
  */
 export async function interrogateOllama(
   prompt: string,
-  onToken: (token: string) => void,
+  onToken: (token: string) => void
 ): Promise<void> {
   const config = Config.getInstance();
 

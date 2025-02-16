@@ -15,9 +15,10 @@ export class Config {
   private constructor() {
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("reqTracker")) {
+        // Todo(Luca): Basta aggiornare la configurazione prendendo il nuovo valore.
         Config.instance = new Config();
         vscode.window.showInformationMessage(
-          "Requirements Tracker: Configuration updated.",
+          "Requirements Tracker: Configuration updated."
         );
       }
     });
