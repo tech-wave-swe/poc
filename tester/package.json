@@ -1,0 +1,24 @@
+{
+  "name": "ai_test",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsx main.ts"
+  },
+  "dependencies": {
+    "chromadb": "^1.10.4",
+    "chromadb-default-embed": "^2.13.2",
+    "ollama": "^0.5.13",
+    "tree-sitter": "^0.22.4",
+    "tree-sitter-c": "^0.23.5",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4"
+  }
+}
