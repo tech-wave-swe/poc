@@ -15,14 +15,7 @@ Per installare e configurare l'ambiente necessario per eseguire il PoC, seguire 
    cd poc/tester
    ```
 
-2. **Installare ed avviare ambiente ChromaDB**
-
-   ```bash
-    docker pull chromadb/chroma
-    docker run -p 8000:8000 chromadb/chroma
-   ```
-
-3. **Configurare Ollama** (se necessario)
+2. **Configurare Ollama** (se necessario)
 
    - Assicurarsi che Ollama sia installato e configurato correttamente
    - Scaricare i modelli necessari con il comando:

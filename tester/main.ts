@@ -1,14 +1,10 @@
-import ollama from "ollama";
 import type { GenerateResponse } from "ollama";
-import { ChromaClient } from "chromadb";
-import { Model } from "./types";
+import { Ollama as OllamaClient } from "ollama";
+import { Embedding, Model } from "./types";
 import { generateEmbeddings } from "./helpers";
-import {
-  deleteCollection,
-  embedSource,
-  getRelativeDocs,
-  interrogateOllama,
-} from "./chromaDBHelper";
+import { EmbeddingsManager } from "./EmbeddingsManager";
+
+const embeddingsManager = new EmbeddingsManager();
 
 const questions = [
   "The ADC1 system shall perform self-calibration",
@@ -27,20 +23,34 @@ const models: Model[] = [
 
 const files = ["example/main.c"];
 
+async function interrogateOllama(similarDocs: Embedding[], question: string) {
+  const relativeDocs = similarDocs
+    .map((doc) => doc.source)
+    .filter((d) => !d?.includes(question))
+    .join("\n");
+
+  const ollama = new OllamaClient({ host: "http://127.0.0.1:11434" });
+  const result = await ollama.generate({
+    model: "qwen2.5-coder:7b",
+    prompt: `${question} This is a requirement that the following code must implement. Return a fixed structure with this structure: {file: filepath, line: line_number}. In this structure filepath is the path of the file that implement the requirement while line_number is the line in witch is implemented. Use only the following code: ${relativeDocs}`,
+    stream: false,
+  });
+
+  return result;
+}
+
 const rawEmbeddingList = generateEmbeddings(files);
 
 for await (const model of models) {
-  await deleteCollection(model.name);
-  await embedSource(model, rawEmbeddingList);
+  embeddingsManager.clear(model.name);
+  await embeddingsManager.addEmbeddings(model, rawEmbeddingList);
 
   const responses: GenerateResponse[] = [];
   for (const question of questions) {
-    const topDocs = await getRelativeDocs(model, question);
+    const similarDocs = await embeddingsManager.findSimilar(model, question);
+    console.log(similarDocs.map((d) => d.source));
 
-    console.log(topDocs.documents);
-
-    const res = await interrogateOllama(topDocs, question);
-
+    const res = await interrogateOllama(similarDocs, question);
     responses.push(res);
   }
 

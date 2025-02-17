@@ -1,5 +1,3 @@
-import type { Metadata } from "chromadb";
-
 export type Model = {
   name: string;
   model: string;
@@ -10,7 +8,10 @@ export type Model = {
 export type Embedding = {
   source: string;
   embed: number[];
-  metadata: Metadata;
+  metadata: {
+    file: string;
+    line: number;
+  };
 };
 
 export type RawEmbed = {
