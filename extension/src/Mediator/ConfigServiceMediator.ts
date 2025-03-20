@@ -1,32 +1,44 @@
-import { eventNames } from "process";
-import { Event, EventType } from "../Event";
-import EventManager from "../EventManager";
-import Mediator from "./MediatorInterface";
+import * as vscode from "vscode";
 
-export default class ConfigServiceMediator extends Mediator {
-  protected constructor() {
-    super();
+export interface Config {
+  endpoint: string;
+  model: string;
+  embeddingModel: string;
+  temperature: number;
+  // bearerToken: string;
+}
 
-    EventManager.subscribe(EventType.GENERIC, this.notify.bind(this));
-  }
+class ConfigServiceMediator {
+  private static instance: ConfigServiceMediator;
+  private config: Config | null = null;
 
-  public static override getInstance(): ConfigServiceMediator {
+  private constructor() {}
+
+  public static getInstance(): ConfigServiceMediator {
     if (!ConfigServiceMediator.instance) {
-      // Create a new instance of the concrete subclass
       ConfigServiceMediator.instance = new ConfigServiceMediator();
     }
 
     return ConfigServiceMediator.instance;
   }
 
-  public notify(event: Event): void {
-    switch (event.type) {
-      case EventType.GENERIC:
-        this.onEventGeneric(event.data);
-    }
-  }
+  public Sync() {
+    const globalConfig = vscode.workspace.getConfiguration("reqTracker");
+    const projectConfig: Config | null = null; // Legge un file di configurazione
 
-  public onEventGeneric(data: any) {
-    console.log("From Config!");
+    this.config = {
+      endpoint: projectConfig
+        ? projectConfig["endpoint"]
+        : globalConfig["endpoint"],
+      model: projectConfig ? projectConfig["model"] : globalConfig["model"],
+      embeddingModel: projectConfig
+        ? projectConfig["embeddingModel"]
+        : globalConfig["embeddingModel"],
+      temperature: projectConfig
+        ? projectConfig["temperature"]
+        : globalConfig["temperature"],
+    };
   }
 }
+
+export default ConfigServiceMediator.getInstance();

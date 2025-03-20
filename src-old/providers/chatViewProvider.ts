@@ -22,7 +22,7 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
     _context: vscode.WebviewViewResolveContext,
-    _token: vscode.CancellationToken,
+    _token: vscode.CancellationToken
   ) {
     this._view = webviewView;
 
@@ -168,16 +168,16 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "chatHandler.js"),
+      vscode.Uri.joinPath(this._extensionUri, "media", "chatHandler.js")
     );
     const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css"),
+      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
     );
     const styleVSCodeUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css"),
+      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
     );
     const styleMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "main.css"),
+      vscode.Uri.joinPath(this._extensionUri, "media", "main.css")
     );
 
     const nonce = this.getNonce();
@@ -185,7 +185,7 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
     const htmlPath = vscode.Uri.joinPath(
       this._extensionUri,
       "media",
-      "chat.html",
+      "chat.html"
     ).fsPath;
     let html = fs.readFileSync(htmlPath, "utf8");
 
